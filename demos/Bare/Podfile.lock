@@ -33,15 +33,15 @@ PODS:
     - MaterialComponents/ActivityIndicator/ColorThemer (= 34.0.1)
     - MaterialComponents/ActivityIndicator/Component (= 34.0.1)
     - MaterialComponents/private/Application
-    - MaterialComponents/private/RTL
+    - MDFInternationalization
   - MaterialComponents/ActivityIndicator/ColorThemer (34.0.1):
     - MaterialComponents/ActivityIndicator/Component
     - MaterialComponents/private/Application
-    - MaterialComponents/private/RTL
     - MaterialComponents/Themes
+    - MDFInternationalization
   - MaterialComponents/ActivityIndicator/Component (34.0.1):
     - MaterialComponents/private/Application
-    - MaterialComponents/private/RTL
+    - MDFInternationalization
   - MaterialComponents/AnimationTiming (34.0.1)
   - MaterialComponents/AppBar (34.0.1):
     - MaterialComponents/AppBar/ColorThemer (= 34.0.1)
@@ -302,6 +302,7 @@ PODS:
   - MaterialComponents/Themes (34.0.1)
   - MaterialComponents/Typography (34.0.1):
     - MaterialComponents/private/Application
+  - MDFInternationalization (1.0.0)
   - MDFTextAccessibility (1.2.0)
   - MotionAnimator (1.1.0):
     - MotionInterchange
@@ -316,7 +317,8 @@ EXTERNAL SOURCES:
     :path: "../../"
 
 SPEC CHECKSUMS:
-  MaterialComponents: 46edbf3696a742c20fcb55623667aa36f5a39b60
+  MaterialComponents: af13a63da81f12f9d224be73019d1831d9dbee89
+  MDFInternationalization: ee80c460a1f469387be6168fb955051320adbee9
   MDFTextAccessibility: 94098925e0853551c5a311ce7c1ecefbe297cdb6
   MotionAnimator: 9d025cda7572737e5db5ca779eb28c767fe6cf45
   MotionInterchange: 7a7c355ba2ed5d36c5cf2ceb76cacd3d3680dbf5

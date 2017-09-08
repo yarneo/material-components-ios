@@ -17,8 +17,8 @@
 #import "MDCActivityIndicator.h"
 
 #import <QuartzCore/QuartzCore.h>
+#import "MDFInternationalization.h"
 
-#import "MaterialRTL.h"
 #import "MaterialApplication.h"
 #import "private/MDCActivityIndicator+Private.h"
 #import "private/MaterialActivityIndicatorStrings.h"
@@ -152,7 +152,7 @@ static const CGFloat kSingleCycleRotation =
 
   // The activity indicator reflects the passage of time (a spatial semantic context) and so
   // will not be mirrored in RTL languages.
-  self.mdc_semanticContentAttribute = UISemanticContentAttributeSpatial;
+  self.mdf_semanticContentAttribute = UISemanticContentAttributeSpatial;
 
   _cycleStartIndex = 0;
   _indicatorMode = MDCActivityIndicatorModeIndeterminate;
