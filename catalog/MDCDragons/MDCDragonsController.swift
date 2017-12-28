@@ -48,7 +48,7 @@ class MDCDragonsController: UIViewController,
   var headerView: HeaderView!
 
   init(node: CBCNode) {
-    let filteredPresentable = node.children.filter { return $0.isPresentable() }
+    let filteredPresentable = node.children.filter { return $0.isPresentable() as? Bool == true }
     let filteredDragons = Set(node.children).subtracting(filteredPresentable)
     cellsBySection = [filteredDragons.map { DragonCell(node: $0) },
                       filteredPresentable.map { DragonCell(node: $0) }]

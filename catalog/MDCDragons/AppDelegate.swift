@@ -24,7 +24,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
     self.window = UIWindow(frame: UIScreen.main.bounds)
     UIApplication.shared.statusBarStyle = .lightContent
+
+    let methodStart = Date()
+
     let tree = CBCCreateNavigationTree()
+
+
+    let methodFinish = Date()
+    let executionTime = methodFinish.timeIntervalSince(methodStart)
+    print("Execution time: \(executionTime)")
     var rootNodeViewController: UIViewController
 
     /**
