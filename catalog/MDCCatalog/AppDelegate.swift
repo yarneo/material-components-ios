@@ -47,8 +47,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     // The navigation tree will only take examples that implement
     // and return YES to catalogIsPresentable.
+    let methodStart = Date()
+
     let tree = CBCCreatePresentableNavigationTree()
 
+
+    let methodFinish = Date()
+    let executionTime = methodFinish.timeIntervalSince(methodStart)
+    print("Execution time: \(executionTime)")
     let rootNodeViewController = MDCCatalogComponentsController(node: tree)
     let navigationController = UINavigationController(rootViewController: rootNodeViewController)
 
