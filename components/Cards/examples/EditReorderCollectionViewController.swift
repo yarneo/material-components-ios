@@ -40,7 +40,7 @@ class EditReorderCollectionViewController: UIViewController,
     collectionView.delegate = self
     collectionView.backgroundColor = UIColor(white: 0.9, alpha: 1)
     collectionView.alwaysBounceVertical = true;
-    collectionView.register(MDCCollectionViewCardCell.self, forCellWithReuseIdentifier: "Cell")
+    collectionView.register(MDCSmallContentCardCell.self, forCellWithReuseIdentifier: "Cell")
     collectionView.translatesAutoresizingMaskIntoConstraints = false
     view.addSubview(collectionView)
 
@@ -103,9 +103,18 @@ class EditReorderCollectionViewController: UIViewController,
   func collectionView(_ collectionView: UICollectionView,
                       cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
     let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell",
-                                                  for: indexPath) as! MDCCollectionViewCardCell
+                                                  for: indexPath) as! MDCSmallContentCardCell
     cell.backgroundColor = .white
     cell.colorForSelectedImage = .blue
+    cell.titleLabel?.text = "Title goes here"
+    cell.subtitleLabel?.text = "Secondary line text Lorem ipsum dolor sit amet"
+    cell.subtitleLabel?.numberOfLines = 0
+    cell.imageView?.image = #imageLiteral(resourceName: "Favorite")
+    cell.imageView?.contentMode = .scaleAspectFit
+    cell.primaryAction?.setTitle("ACTION 1", for: .normal)
+    cell.primaryAction?.setTitleColor(.black, for: .normal)
+    cell.secondaryAction?.setTitle("ACTION 2", for: .normal)
+    cell.secondaryAction?.setTitleColor(.black, for: .normal)
     if toggle == .edit {
       if dataSource[indexPath.item].1 {
         cell.selectionState(MDCCardCellSelectionState.selected)
@@ -122,7 +131,7 @@ class EditReorderCollectionViewController: UIViewController,
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
     if toggle == .edit {
       dataSource[indexPath.item].1 = !dataSource[indexPath.item].1
-      let cell = collectionView.cellForItem(at: indexPath) as! MDCCollectionViewCardCell
+      let cell = collectionView.cellForItem(at: indexPath) as! MDCSmallContentCardCell
       if dataSource[indexPath.item].1 {
         cell.selectionState(MDCCardCellSelectionState.select)
       } else {
@@ -149,7 +158,7 @@ class EditReorderCollectionViewController: UIViewController,
                       layout collectionViewLayout: UICollectionViewLayout,
                       sizeForItemAt indexPath: IndexPath) -> CGSize {
     let cardSize = (collectionView.bounds.size.width / 3) - 12
-    return CGSize(width: cardSize, height: cardSize)
+    return CGSize(width: self.collectionView.bounds.size.width, height: cardSize)
   }
 
   func collectionView(_ collectionView: UICollectionView,
@@ -207,6 +216,6 @@ extension EditReorderCollectionViewController {
   }
 
   @objc class func catalogIsDebug() -> Bool {
-    return false
+    return true
   }
 }

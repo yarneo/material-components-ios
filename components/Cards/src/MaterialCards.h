@@ -16,4 +16,5 @@
 
 #import "MDCCard.h"
 #import "MDCCollectionViewCardCell.h"
+#import "MDCSmallContentCardCell.h"
 
