@@ -28,7 +28,7 @@ class BottomAppBarTypicalUseSwiftExample: UIViewController {
 
   init() {
     super.init(nibName: nil, bundle: nil)
-
+    print("hehe")
     self.title = "Bottom App Bar (Swift)"
     self.addChildViewController(appBar.headerViewController)
 

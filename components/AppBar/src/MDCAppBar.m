@@ -49,7 +49,7 @@ static NSString *const kMaterialAppBarBundle = @"MaterialAppBar.bundle";
   if (!backgroundColor) {
     return;
   }
-
+  NSLog(@"haha");
   // Update title label color based on navigationBar/headerView backgroundColor
   NSMutableDictionary *textAttr =
       [NSMutableDictionary dictionaryWithDictionary:[appBar.navigationBar titleTextAttributes]];
