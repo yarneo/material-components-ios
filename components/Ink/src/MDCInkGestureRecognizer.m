@@ -58,6 +58,7 @@ static const CGFloat kInkGestureDefaultDragCancelDistance = 20;
   if (self.state == UIGestureRecognizerStateFailed) {
     int x = 0;
     x+=1;
+    x+=2;
     return;
   }
 
