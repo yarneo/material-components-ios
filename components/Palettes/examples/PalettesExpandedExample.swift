@@ -21,6 +21,7 @@ private func randomFloat() -> CGFloat {
 }
 
 private func generateRandomPalettes(_ count: Int) -> [(name: String, palette: MDCPalette)] {
+  print("lol")
   var palettes = [(name: String, palette: MDCPalette)]()
   for _ in 1...count {
     let rgb = [randomFloat(), randomFloat(), randomFloat()]
