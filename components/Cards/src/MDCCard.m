@@ -317,4 +317,46 @@ static const CGFloat MDCCardCornerRadiusDefault = 4.f;
   self.layer.shapedBackgroundColor = _backgroundColor;
 }
 
+#pragma mark - Accessibility
+
+- (void)setAccessibilityLabel:(NSString *)accessibilityLabel {
+  // Intercept any explicit setting of the accessibilityLabel so it can be returned
+  // later before the accessibiilityLabel is inferred from the setTitle:forState:
+  // argument values.
+  _accessibilityLabelExplicitValue = [accessibilityLabel copy];
+  [super setAccessibilityLabel:accessibilityLabel];
+}
+
+- (NSString *)accessibilityLabel {
+  if (!_uppercaseTitle) {
+    return [super accessibilityLabel];
+  }
+
+  NSString *label = _accessibilityLabelExplicitValue;
+  if ([label length]) {
+    return label;
+  }
+
+  label = _nontransformedTitles[@(self.state)];
+  if ([label length]) {
+    return label;
+  }
+
+  label = _nontransformedTitles[@(UIControlStateNormal)];
+  if ([label length]) {
+    return label;
+  }
+
+  label = [super accessibilityLabel];
+  if ([label length]) {
+    return label;
+  }
+
+  return nil;
+}
+
+- (UIAccessibilityTraits)accessibilityTraits {
+  return [super accessibilityTraits] | UIAccessibilityTraitButton;
+}
+
 @end
