@@ -1,18 +1,16 @@
-/*
- Copyright 2017-present the Material Components for iOS authors. All Rights Reserved.
-
- Licensed under the Apache License, Version 2.0 (the "License");
- you may not use this file except in compliance with the License.
- You may obtain a copy of the License at
-
- http://www.apache.org/licenses/LICENSE-2.0
-
- Unless required by applicable law or agreed to in writing, software
- distributed under the License is distributed on an "AS IS" BASIS,
- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- See the License for the specific language governing permissions and
- limitations under the License.
- */
+// Copyright 2017-present the Material Components for iOS authors. All Rights Reserved.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+// http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
 
 #import "BottomAppBarTypicalUseSupplemental.h"
 
@@ -24,30 +22,24 @@ static NSString *const kCellIdentifier = @"cell";
 
 @interface BottomAppBarExampleTableViewController ()
 @property(nonatomic, strong) UISwitch *fabVisibilitySwitch;
-@property(nonatomic, strong) MDCAppBar *appBar;
+@property(nonatomic, strong) MDCAppBarViewController *appBarViewController;
 @property(nonatomic, strong) MDCSemanticColorScheme *colorScheme;
 @property(nonatomic, strong) MDCTypographyScheme *typographyScheme;
 @end
 
 @implementation BottomAppBarTypicalUseExample (CatalogByConvention)
 
-+ (NSArray *)catalogBreadcrumbs {
-  return @[ @"Bottom App Bar", @"Bottom App Bar" ];
-}
-
-+ (NSString *)catalogDescription {
-  return @"A bottom app bar displays navigation and key actions at the bottom of the screen.";
-}
-
-+ (BOOL)catalogIsPrimaryDemo {
-  return YES;
++ (NSDictionary *)catalogMetadata {
+  return @{
+    @"breadcrumbs": @[ @"Bottom App Bar", @"Bottom App Bar" ],
+    @"description": @"A bottom app bar displays navigation and key actions at the "
+    @"bottom of the screen.",
+    @"primaryDemo": @YES,
+    @"presentable": @YES,
+  };
 }
 
 - (BOOL)catalogShouldHideNavigation {
-  return YES;
-}
-
-+ (BOOL)catalogIsPresentable {
   return YES;
 }
 
@@ -86,8 +78,8 @@ static NSString *const kCellIdentifier = @"cell";
     
     self.title = @"Bottom App Bar";
     
-    _appBar = [[MDCAppBar alloc] init];
-    [self addChildViewController:_appBar.headerViewController];
+    _appBarViewController = [[MDCAppBarViewController alloc] init];
+    [self addChildViewController:_appBarViewController];
   }
   return self;
 }
@@ -95,12 +87,13 @@ static NSString *const kCellIdentifier = @"cell";
 - (void)viewDidLoad {
   [super viewDidLoad];
 
-  [MDCAppBarTypographyThemer applyTypographyScheme:self.typographyScheme toAppBar:_appBar];
-  [MDCAppBarColorThemer applySemanticColorScheme:self.colorScheme toAppBar:_appBar];
+  [MDCAppBarTypographyThemer applyTypographyScheme:self.typographyScheme toAppBarViewController:_appBarViewController];
+  [MDCAppBarColorThemer applyColorScheme:self.colorScheme toAppBarViewController:self.appBarViewController];
   
-  self.appBar.headerViewController.headerView.trackingScrollView = self.tableView;
+  self.appBarViewController.headerView.trackingScrollView = self.tableView;
   
-  [self.appBar addSubviewsToParent];
+  [self.view addSubview:self.appBarViewController.view];
+  [self.appBarViewController didMoveToParentViewController:self];
   
   self.fabVisibilitySwitch = [[UISwitch alloc] init];
   self.fabVisibilitySwitch.on = !self.bottomBarView.floatingButtonHidden;
@@ -111,6 +104,15 @@ static NSString *const kCellIdentifier = @"cell";
   [self.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:kCellIdentifier];
   self.tableView.layoutMargins = UIEdgeInsetsZero;
   self.tableView.separatorInset = UIEdgeInsetsZero;
+}
+
+- (void)viewWillLayoutSubviews {
+  [super viewWillLayoutSubviews];
+
+  CGRect bottomAppBarFrame = self.bottomBarView.frame;
+  UIEdgeInsets contentInset = self.tableView.contentInset;
+  contentInset.bottom = bottomAppBarFrame.size.height;
+  self.tableView.contentInset = contentInset;
 }
 
 #pragma mark - Table view data source
@@ -175,20 +177,20 @@ static NSString *const kCellIdentifier = @"cell";
 #pragma mark - UIScrollViewDelegate
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-  if (scrollView == self.appBar.headerViewController.headerView.trackingScrollView) {
-    [self.appBar.headerViewController.headerView trackingScrollViewDidScroll];
+  if (scrollView == self.appBarViewController.headerView.trackingScrollView) {
+    [self.appBarViewController.headerView trackingScrollViewDidScroll];
   }
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
-  if (scrollView == self.appBar.headerViewController.headerView.trackingScrollView) {
-    [self.appBar.headerViewController.headerView trackingScrollViewDidEndDecelerating];
+  if (scrollView == self.appBarViewController.headerView.trackingScrollView) {
+    [self.appBarViewController.headerView trackingScrollViewDidEndDecelerating];
   }
 }
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
-  if (scrollView == self.appBar.headerViewController.headerView.trackingScrollView) {
-    [self.appBar.headerViewController.headerView
+  if (scrollView == self.appBarViewController.headerView.trackingScrollView) {
+    [self.appBarViewController.headerView
      trackingScrollViewDidEndDraggingWillDecelerate:decelerate];
   }
 }
@@ -196,8 +198,8 @@ static NSString *const kCellIdentifier = @"cell";
 - (void)scrollViewWillEndDragging:(UIScrollView *)scrollView
                      withVelocity:(CGPoint)velocity
               targetContentOffset:(inout CGPoint *)targetContentOffset {
-  if (scrollView == self.appBar.headerViewController.headerView.trackingScrollView) {
-    [self.appBar.headerViewController.headerView
+  if (scrollView == self.appBarViewController.headerView.trackingScrollView) {
+    [self.appBarViewController.headerView
         trackingScrollViewWillEndDraggingWithVelocity:velocity
                                   targetContentOffset:targetContentOffset];
   }

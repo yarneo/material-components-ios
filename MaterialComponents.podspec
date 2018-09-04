@@ -175,14 +175,6 @@ Pod::Spec.new do |mdc|
     component.dependency "MaterialComponents/private/Shapes"
   end
 
-  mdc.subspec "BottomSheet+ShapeThemer" do |extension|
-    extension.ios.deployment_target = '8.0'
-    extension.public_header_files = "components/#{extension.base_name.split('+')[0]}/src/#{extension.base_name.split('+')[1]}/*.h"
-    extension.source_files = "components/#{extension.base_name.split('+')[0]}/src/#{extension.base_name.split('+')[1]}/*.{h,m}"
-
-    extension.dependency "MaterialComponents/schemes/Shape"
-  end
-
   # Buttons
 
   mdc.subspec "Buttons" do |component|
@@ -206,15 +198,6 @@ Pod::Spec.new do |mdc|
     extension.source_files = "components/#{extension.base_name.split('+')[0]}/src/#{extension.base_name.split('+')[1]}/*.{h,m}", "components/#{extension.base_name.split('+')[0]}/src/#{extension.base_name.split('+')[1]}/private/*.{h,m}"
     extension.dependency "MaterialComponents/#{extension.base_name.split('+')[0]}"
     extension.dependency "MaterialComponents/schemes/Color"
-  end
-
-  mdc.subspec "Buttons+ShapeThemer" do |extension|
-    extension.ios.deployment_target = '8.0'
-    extension.public_header_files = "components/#{extension.base_name.split('+')[0]}/src/#{extension.base_name.split('+')[1]}/*.h"
-    extension.source_files = "components/#{extension.base_name.split('+')[0]}/src/#{extension.base_name.split('+')[1]}/*.{h,m}", "components/#{extension.base_name.split('+')[0]}/src/#{extension.base_name.split('+')[1]}/private/*.{h,m}"
-
-    extension.dependency "MaterialComponents/#{extension.base_name.split('+')[0]}"
-    extension.dependency "MaterialComponents/schemes/Shape"
   end
 
   mdc.subspec "Buttons+TitleColorAccessibilityMutator" do |extension|
@@ -295,15 +278,6 @@ Pod::Spec.new do |mdc|
     extension.dependency "MaterialComponents/schemes/Color"
   end
 
-  mdc.subspec "Cards+ShapeThemer" do |extension|
-    extension.ios.deployment_target = '8.0'
-    extension.public_header_files = "components/#{extension.base_name.split('+')[0]}/src/#{extension.base_name.split('+')[1]}/*.h"
-    extension.source_files = "components/#{extension.base_name.split('+')[0]}/src/#{extension.base_name.split('+')[1]}/*.{h,m}"
-
-    extension.dependency "MaterialComponents/#{extension.base_name.split('+')[0]}"
-    extension.dependency "MaterialComponents/schemes/Shape"
-  end
-
   mdc.subspec "Cards+CardThemer" do |extension|
     extension.ios.deployment_target = '8.0'
     extension.public_header_files = "components/#{extension.base_name.split('+')[0]}/src/#{extension.base_name.split('+')[1]}/*.h"
@@ -336,7 +310,6 @@ Pod::Spec.new do |mdc|
 
     extension.dependency "MaterialComponents/#{extension.base_name.split('+')[0]}"
     extension.dependency "MaterialComponents/Chips+ColorThemer"
-    extension.dependency "MaterialComponents/Chips+ShapeThemer"
     extension.dependency "MaterialComponents/Chips+TypographyThemer"
   end
 
@@ -356,15 +329,6 @@ Pod::Spec.new do |mdc|
 
     extension.dependency "MaterialComponents/#{extension.base_name.split('+')[0]}"
     extension.dependency "MaterialComponents/Themes"
-  end
-
-  mdc.subspec "Chips+ShapeThemer" do |extension|
-    extension.ios.deployment_target = '8.0'
-    extension.public_header_files = "components/#{extension.base_name.split('+')[0]}/src/#{extension.base_name.split('+')[1]}/*.h"
-    extension.source_files = "components/#{extension.base_name.split('+')[0]}/src/#{extension.base_name.split('+')[1]}/*.{h,m}"
-
-    extension.dependency "MaterialComponents/#{extension.base_name.split('+')[0]}"
-    extension.dependency "MaterialComponents/schemes/Shape"
   end
 
   mdc.subspec "Chips+TypographyThemer" do |extension|
