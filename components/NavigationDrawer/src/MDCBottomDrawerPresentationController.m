@@ -95,7 +95,7 @@ static CGFloat kTopHandleYCenter = 6.f;
                                                             0,
                                                             kTopHandleWidth,
                                                             kTopHandleHeight)];
-  self.topHandle.layer.cornerRadius = 1.f;
+  self.topHandle.layer.cornerRadius = kTopHandleHeight * 0.5;
   self.topHandle.backgroundColor = MDCPalette.greyPalette.tint300;
   self.topHandle.center = CGPointMake(self.presentedView.center.x, kTopHandleYCenter);
   self.topHandle.autoresizingMask =
