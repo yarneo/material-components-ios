@@ -15,7 +15,12 @@
 #import "MDCBottomDrawerPresentationController.h"
 
 #import "MDCBottomDrawerViewController.h"
+#import "MaterialPalettes.h"
 #import "private/MDCBottomDrawerContainerViewController.h"
+
+static CGFloat kTopHandleHeight = 2.f;
+static CGFloat kTopHandleWidth = 24.f;
+static CGFloat kTopHandleYCenter = 6.f;
 
 @interface MDCBottomDrawerPresentationController () <UIGestureRecognizerDelegate,
                                                      MDCBottomDrawerContainerViewControllerDelegate>
@@ -24,6 +29,11 @@
  A semi-transparent scrim view that darkens the visible main view when the drawer is displayed.
  */
 @property(nonatomic) UIView *scrimView;
+
+/**
+ The top handle view at the top of the drawer to provide a visual affordance for scrollability.
+ */
+@property(nonatomic) UIView *topHandle;
 
 /**
  The bottom drawer container view controller.
@@ -81,6 +91,21 @@
 
   [self.containerView addSubview:self.scrimView];
 
+  self.topHandle = [[UIView alloc] initWithFrame:CGRectMake(0,
+                                                            0,
+                                                            kTopHandleWidth,
+                                                            kTopHandleHeight)];
+  self.topHandle.layer.cornerRadius = 1.f;
+  self.topHandle.backgroundColor = MDCPalette.greyPalette.tint300;
+  self.topHandle.center = CGPointMake(self.presentedView.center.x, kTopHandleYCenter);
+  self.topHandle.autoresizingMask =
+      UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
+  if (bottomDrawerContainerViewController.headerViewController) {
+    [bottomDrawerContainerViewController.headerViewController.view addSubview:self.topHandle];
+  } else {
+    [bottomDrawerContainerViewController.contentViewController.view addSubview:self.topHandle];
+  }
+
   if ([self.presentedViewController isKindOfClass:[MDCBottomDrawerViewController class]]) {
     [self.presentedView addSubview:self.bottomDrawerContainerViewController.view];
   } else {
@@ -110,6 +135,7 @@
   [self.bottomDrawerContainerViewController.view setNeedsLayout];
   if (!completed) {
     [self.scrimView removeFromSuperview];
+    [self.topHandle removeFromSuperview];
   }
 }
 
@@ -126,6 +152,7 @@
 - (void)dismissalTransitionDidEnd:(BOOL)completed {
   if (completed) {
     [self.scrimView removeFromSuperview];
+    [self.topHandle removeFromSuperview];
   }
 }
 
@@ -180,6 +207,7 @@
                                                                   transitionRatio:)]) {
     [strongDelegate bottomDrawerTopTransitionRatio:self transitionRatio:transitionRatio];
   }
+  self.topHandle.alpha = 1.f - transitionRatio;
 }
 
 @end
