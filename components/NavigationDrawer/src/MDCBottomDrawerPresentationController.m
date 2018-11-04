@@ -73,7 +73,6 @@ static CGFloat kTopHandleYCenter = 6.f;
         bottomDrawerViewController.contentViewController;
     bottomDrawerContainerViewController.headerViewController =
         bottomDrawerViewController.headerViewController;
-    self.delegate = bottomDrawerViewController;
   } else {
     bottomDrawerContainerViewController.contentViewController = self.presentedViewController;
   }
@@ -97,7 +96,8 @@ static CGFloat kTopHandleYCenter = 6.f;
                                                             kTopHandleHeight)];
   self.topHandle.layer.cornerRadius = kTopHandleHeight * 0.5;
   self.topHandle.backgroundColor = MDCPalette.greyPalette.tint300;
-  self.topHandle.center = CGPointMake(self.presentedView.center.x, kTopHandleYCenter);
+  self.topHandle.center = CGPointMake(
+      bottomDrawerContainerViewController.contentViewController.view.center.x, kTopHandleYCenter);
   self.topHandle.autoresizingMask =
       UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
   if (bottomDrawerContainerViewController.headerViewController) {
