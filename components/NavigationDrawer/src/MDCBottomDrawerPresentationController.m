@@ -105,6 +105,7 @@ static CGFloat kTopHandleYCenter = 6.f;
   } else {
     [bottomDrawerContainerViewController.contentViewController.view addSubview:self.topHandle];
   }
+  self.topHandle.hidden = YES;
 
   if ([self.presentedViewController isKindOfClass:[MDCBottomDrawerViewController class]]) {
     [self.presentedView addSubview:self.bottomDrawerContainerViewController.view];
@@ -172,6 +173,16 @@ static CGFloat kTopHandleYCenter = 6.f;
 - (void)setScrimColor:(UIColor *)scrimColor {
   _scrimColor = scrimColor;
   self.scrimView.backgroundColor = scrimColor;
+}
+
+- (void)setTopHandleHidden:(BOOL)topHandleHidden {
+  _topHandleHidden = topHandleHidden;
+  self.topHandle.hidden = topHandleHidden;
+}
+
+- (void)setTopHandleColor:(UIColor *)topHandleColor {
+  _topHandleColor = topHandleColor;
+  self.topHandle.backgroundColor = topHandleColor;
 }
 
 #pragma mark - Private
