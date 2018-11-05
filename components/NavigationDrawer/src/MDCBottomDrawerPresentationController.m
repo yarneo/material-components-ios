@@ -46,6 +46,16 @@ static CGFloat kTopHandleYCenter = 6.f;
 
 @synthesize delegate;
 
+- (instancetype)initWithPresentedViewController:(UIViewController *)presentedViewController
+                       presentingViewController:(UIViewController *)presentingViewController {
+  self = [super initWithPresentedViewController:presentedViewController
+                       presentingViewController:presentingViewController];
+  if (self) {
+    _topHandleHidden = YES;
+  }
+  return self;
+}
+
 - (UIView *)presentedView {
   if ([self.presentedViewController isKindOfClass:[MDCBottomDrawerViewController class]]) {
     return super.presentedView;
@@ -89,13 +99,13 @@ static CGFloat kTopHandleYCenter = 6.f;
   self.scrimView.accessibilityTraits |= UIAccessibilityTraitButton;
 
   [self.containerView addSubview:self.scrimView];
-
   self.topHandle = [[UIView alloc] initWithFrame:CGRectMake(0,
                                                             0,
                                                             kTopHandleWidth,
                                                             kTopHandleHeight)];
   self.topHandle.layer.cornerRadius = kTopHandleHeight * 0.5;
-  self.topHandle.backgroundColor = MDCPalette.greyPalette.tint300;
+  self.topHandle.backgroundColor = self.topHandleColor ?: MDCPalette.greyPalette.tint300;
+  self.topHandle.hidden = self.topHandleHidden;
   self.topHandle.center = CGPointMake(
       bottomDrawerContainerViewController.contentViewController.view.center.x, kTopHandleYCenter);
   self.topHandle.autoresizingMask =
@@ -105,7 +115,6 @@ static CGFloat kTopHandleYCenter = 6.f;
   } else {
     [bottomDrawerContainerViewController.contentViewController.view addSubview:self.topHandle];
   }
-  self.topHandle.hidden = YES;
 
   if ([self.presentedViewController isKindOfClass:[MDCBottomDrawerViewController class]]) {
     [self.presentedView addSubview:self.bottomDrawerContainerViewController.view];
