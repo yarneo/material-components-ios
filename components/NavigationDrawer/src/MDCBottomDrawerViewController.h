@@ -67,6 +67,9 @@
  */
 @property(nonatomic, strong, nullable) UIColor *topHandleColor;
 
+@property(nonatomic) CGFloat drawerOpenRate;
+
+
 /**
  Sets the top corners radius for an MDCBottomDrawerState drawerState
 

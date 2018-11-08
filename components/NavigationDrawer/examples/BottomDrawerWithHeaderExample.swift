@@ -24,6 +24,7 @@ class BottomDrawerWithHeaderExample: UIViewController {
 
   let headerViewController = DrawerHeaderViewController()
   let contentViewController = DrawerContentViewController()
+  let bottomDrawerViewController = MDCBottomDrawerViewController()
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -39,6 +40,10 @@ class BottomDrawerWithHeaderExample: UIViewController {
     MDCBottomAppBarColorThemer.applySurfaceVariant(withSemanticColorScheme: colorScheme,
                                                    to: bottomAppBar)
     view.addSubview(bottomAppBar)
+
+    contentViewController.button.addTarget(self,
+                                           action: #selector(changeDrawerHeight),
+                                           for: .touchUpInside)
   }
 
   private func layoutBottomAppBar() {
@@ -61,7 +66,6 @@ class BottomDrawerWithHeaderExample: UIViewController {
   }
 
   @objc func presentNavigationDrawer() {
-    let bottomDrawerViewController = MDCBottomDrawerViewController()
     bottomDrawerViewController.setTopCornersRadius(24, for: .collapsed)
     bottomDrawerViewController.setTopCornersRadius(8, for: .expanded)
     bottomDrawerViewController.isTopHandleHidden = false
@@ -71,6 +75,10 @@ class BottomDrawerWithHeaderExample: UIViewController {
     MDCBottomDrawerColorThemer.applySemanticColorScheme(colorScheme,
                                                         toBottomDrawer: bottomDrawerViewController)
     present(bottomDrawerViewController, animated: true, completion: nil)
+  }
+
+  func changeDrawerHeight() {
+    bottomDrawerViewController.drawerOpenRate = 1.0;
   }
 }
 

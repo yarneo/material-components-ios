@@ -97,6 +97,8 @@
 // Whether the drawer is currently animating its presentation.
 @property(nonatomic) BOOL animatingPresentation;
 
+@property(nonatomic) CGFloat drawerOpenRate;
+
 /**
  Delegate to tell the presentation controller when the drawer will change state.
  */

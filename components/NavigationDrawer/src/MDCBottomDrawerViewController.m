@@ -79,6 +79,15 @@
   _transitionController.trackingScrollView = trackingScrollView;
 }
 
+- (void)setDrawerOpenRate:(CGFloat)drawerOpenRate {
+  _drawerOpenRate = drawerOpenRate;
+  if ([self.presentationController isKindOfClass:[MDCBottomDrawerPresentationController class]]) {
+    MDCBottomDrawerPresentationController *bottomDrawerPresentationController =
+        (MDCBottomDrawerPresentationController *)self.presentationController;
+    bottomDrawerPresentationController.drawerOpenRate = drawerOpenRate;
+  }
+}
+
 - (void)setTopCornersRadius:(CGFloat)radius forDrawerState:(MDCBottomDrawerState)drawerState {
   _topCornersRadius[@(drawerState)] = @(radius);
 

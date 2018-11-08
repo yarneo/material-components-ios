@@ -17,6 +17,12 @@ import MaterialComponents.MaterialColorScheme
 import MaterialComponents.MaterialNavigationDrawer
 
 class DrawerContentViewController: UIViewController {
+  let button: UIButton = {
+    let button = UIButton(frame: .zero)
+    button.setTitle("Press Me", for: .normal)
+    return button
+  }()
+
   let preferredHeight: CGFloat = 2000
 
   override var preferredContentSize: CGSize {
@@ -34,6 +40,21 @@ class DrawerContentViewController: UIViewController {
 
   required init?(coder aDecoder: NSCoder) {
     super.init(coder: aDecoder)
+  }
+
+  override func viewDidLoad() {
+    super.viewDidLoad()
+
+    self.view.addSubview(button)
+  }
+
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+
+    button.sizeToFit()
+    button.backgroundColor = .blue
+    button.center =
+      CGPoint(x: self.view.frame.size.width / 2, y: 50)
   }
 }
 

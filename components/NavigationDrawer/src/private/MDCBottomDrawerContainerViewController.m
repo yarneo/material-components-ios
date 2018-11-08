@@ -161,6 +161,7 @@ static UIColor *DrawerShadowColor(void) {
     _addedContentHeight = NSNotFound;
     _trackingScrollView = trackingScrollView;
     _drawerState = MDCBottomDrawerStateCollapsed;
+    _drawerOpenRate = 0.5f;
   }
   return self;
 }
@@ -172,6 +173,16 @@ static UIColor *DrawerShadowColor(void) {
 
 - (void)hideDrawer {
   [self.originalPresentingViewController dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)setDrawerOpenRate:(CGFloat)drawerOpenRate {
+  if (drawerOpenRate != _drawerOpenRate && _contentHeightSurplus != NSNotFound) {
+    _contentHeaderTopInset = NSNotFound;
+    _contentHeightSurplus = NSNotFound;
+    _addedContentHeight = NSNotFound;
+    [self.view setNeedsLayout];
+  }
+  _drawerOpenRate = drawerOpenRate;
 }
 
 #pragma mark UIGestureRecognizerDelegate (Public)
@@ -296,7 +307,7 @@ static UIColor *DrawerShadowColor(void) {
  the default value becomes 1.0.
  */
 - (CGFloat)initialDrawerFactor {
-  return [self shouldPresentFullScreen] ? 1.0f : 0.5f;
+  return [self shouldPresentFullScreen] ? 1.0f : self.drawerOpenRate;
 }
 
 - (void)addScrollViewObserver {

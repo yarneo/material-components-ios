@@ -90,7 +90,9 @@ static CGFloat kTopHandleYCenter = (CGFloat)6.0;
   bottomDrawerContainerViewController.animatingPresentation = YES;
   self.bottomDrawerContainerViewController = bottomDrawerContainerViewController;
   self.bottomDrawerContainerViewController.delegate = self;
-
+  if (self.drawerOpenRate > 0.f) {
+    self.bottomDrawerContainerViewController.drawerOpenRate = self.drawerOpenRate;
+  }
   self.scrimView = [[UIView alloc] initWithFrame:self.containerView.bounds];
   self.scrimView.backgroundColor =
       self.scrimColor ?: [UIColor colorWithWhite:0 alpha:(CGFloat)0.32];
@@ -193,6 +195,11 @@ static CGFloat kTopHandleYCenter = (CGFloat)6.0;
 - (void)setTopHandleColor:(UIColor *)topHandleColor {
   _topHandleColor = topHandleColor;
   self.topHandle.backgroundColor = topHandleColor;
+}
+
+- (void)setDrawerOpenRate:(CGFloat)drawerOpenRate {
+  _drawerOpenRate = drawerOpenRate;
+  self.bottomDrawerContainerViewController.drawerOpenRate = drawerOpenRate;
 }
 
 #pragma mark - Private

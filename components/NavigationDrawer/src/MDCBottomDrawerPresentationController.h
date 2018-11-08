@@ -87,4 +87,7 @@
  */
 @property(nonatomic, strong, nullable) UIColor *topHandleColor;
 
+@property(nonatomic) CGFloat drawerOpenRate;
+
+
 @end
