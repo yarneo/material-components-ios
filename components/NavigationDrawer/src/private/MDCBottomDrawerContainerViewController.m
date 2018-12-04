@@ -31,7 +31,7 @@ static const CGFloat kEpsilon = (CGFloat)0.001;
 // as in cases where the drawer shows in full screen, the scroll offset is 0, and then the scrolling
 // has the behavior as if we are scrolling at the end of the content, and the scrolling isn't
 // smooth.
-static const CGFloat kScrollViewBufferForPerformance = 20;
+static const CGFloat kScrollViewBufferForPerformance = 0;
 static const CGFloat kDragVelocityThresholdForHidingDrawer = -2;
 static NSString *const kContentOffsetKeyPath = @"contentOffset";
 
@@ -211,7 +211,23 @@ static UIColor *DrawerShadowColor(void) {
     // accordingly.
     CGPoint normalizedContentOffset = contentOffset;
     if (self.trackingScrollView != nil) {
-      normalizedContentOffset.y = [self updateContentOffsetForPerformantScrolling:contentOffset.y];
+//      normalizedContentOffset.y = [self updateContentOffsetForPerformantScrolling:contentOffset.y];
+      CGFloat topAreaInsetForHeader = (self.headerViewController ? MDCDeviceTopSafeAreaInset() : 0);
+      CGFloat drawerOffset = self.contentHeaderTopInset - topAreaInsetForHeader;
+      CGFloat contentOffsetY = MAX(0, self.scrollView.contentOffset.y - drawerOffset);
+//      NSLog(@"scroll view content offset Y: %f", self.scrollView.contentOffset.y);
+      NSLog(@"content offset Y: %f", contentOffsetY);
+//      NSLog(@"content height surplus: %f", self.contentHeightSurplus);
+//
+////      if(CGRectGetMinY(self.scrollView.bounds) >= drawerOffset) {
+        self.trackingScrollView.contentOffset =
+            CGPointMake(self.trackingScrollView.contentOffset.x,
+                        contentOffsetY);
+        self.trackingScrollView.transform = CGAffineTransformMakeTranslation(0, contentOffsetY);
+////      } else {
+////        self.trackingScrollView.contentOffset =
+////            CGPointMake(self.trackingScrollView.contentOffset.x, 0);
+////      }
     }
 
     [self updateViewWithContentOffset:normalizedContentOffset];
@@ -429,34 +445,48 @@ static UIColor *DrawerShadowColor(void) {
   // Layout the top header's bottom shadow.
   [self setUpHeaderBottomShadowIfNeeded];
   self.headerShadowLayer.frame = self.headerViewController.view.bounds;
-
   // Set the scroll view's content size.
   CGSize scrollViewContentSize = self.presentingViewBounds.size;
   scrollViewContentSize.height += self.contentHeightSurplus;
   self.scrollView.contentSize = scrollViewContentSize;
-
-  // Layout the main content view.
   CGRect contentViewFrame = self.scrollView.bounds;
-  contentViewFrame.origin.y = self.contentHeaderTopInset + self.contentHeaderHeight;
+
+//  if (!done) {
+  if (contentViewFrame.origin.y != self.contentHeaderTopInset + self.contentHeaderHeight) {
+    NSLog(@"WHAT1 %f %f %f" , self.contentHeaderTopInset, self.contentHeaderHeight, contentViewFrame.origin.y );
+  }
+  // Layout the main content view.
+  if (contentViewFrame.origin.y <= 0) {
+    contentViewFrame.origin.y = self.contentHeaderTopInset + self.contentHeaderHeight;
+
   if (self.trackingScrollView != nil) {
     CGFloat topAreaInsetForHeader = (self.headerViewController ? MDCDeviceTopSafeAreaInset() : 0);
-    contentViewFrame.size.height -= self.contentHeaderHeight - kScrollViewBufferForPerformance;
+    if (contentViewFrame.size.height != self.scrollView.bounds.size.height - self.contentHeaderHeight + topAreaInsetForHeader) {
+      NSLog(@"WHAT2 %f %f %f" , self.scrollView.bounds.size.height, topAreaInsetForHeader, contentViewFrame.size.height );
+    }
+    contentViewFrame.size.height -= self.contentHeaderHeight;
     // We add the topAreaInsetForHeader to the height of the content view frame when a tracking
     // scroll view is set, to normalize the algorithm after the removal of this value from the
     // topAreaInsetForHeader inside the updateContentOffsetForPerformantScrolling method.
-    if (self.contentHeaderTopInset > topAreaInsetForHeader + kEpsilon) {
+//    if (self.contentHeaderTopInset > topAreaInsetForHeader + kEpsilon) {
       contentViewFrame.size.height += topAreaInsetForHeader;
-    }
+//    }
   } else {
-    contentViewFrame.size.height = _contentVCPreferredContentSizeHeightCached;
-    if ([self shouldPresentFullScreen]) {
-      contentViewFrame.size.height =
-          MAX(contentViewFrame.size.height,
-              self.presentingViewBounds.size.height - self.topHeaderHeight);
-    }
+//    contentViewFrame.size.height = _contentVCPreferredContentSizeHeightCached;
+//    if ([self shouldPresentFullScreen]) {
+//      contentViewFrame.size.height =
+//      MAX(contentViewFrame.size.height,
+//          self.presentingViewBounds.size.height - self.topHeaderHeight);
+//    }
   }
   self.contentViewController.view.frame = contentViewFrame;
+  }
+//    done = YES;
+//  }
   if (self.trackingScrollView != nil) {
+    if (contentViewFrame.origin.y != self.trackingScrollView.frame.origin.y) {
+      NSLog(@"WHAT?!?!");
+    }
     contentViewFrame.origin.y = self.trackingScrollView.frame.origin.y;
     self.trackingScrollView.frame = contentViewFrame;
   }

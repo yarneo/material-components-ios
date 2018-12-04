@@ -130,6 +130,7 @@ extension BottomDrawerInfiniteScrollingExample {
       "description": "Navigation Drawer",
       "primaryDemo": true,
       "presentable": true,
+      "debug": true,
     ]
   }
 }
