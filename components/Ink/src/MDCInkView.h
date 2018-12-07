@@ -13,6 +13,7 @@
 // limitations under the License.
 
 #import <UIKit/UIKit.h>
+#import "MDCInkLayer.h"
 
 @protocol MDCInkViewDelegate;
 
@@ -64,6 +65,8 @@ typedef NS_ENUM(NSInteger, MDCInkStyle) {
 
 /** Default color used for ink if no color is specified. */
 @property(nonatomic, strong, readonly, nonnull) UIColor *defaultInkColor;
+
+@property(nonatomic, strong) MDCInkLayer *activeInkLayer;
 
 /**
  Maximum radius of the ink. If the radius <= 0 then half the length of the diagonal of self.bounds

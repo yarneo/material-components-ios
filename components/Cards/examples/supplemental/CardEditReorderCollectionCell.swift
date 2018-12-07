@@ -54,6 +54,7 @@ class CardEditReorderCollectionCell: MDCCardCollectionCell {
 
   func apply(cardScheme: MDCCardScheme, typographyScheme: MDCTypographyScheme) {
     MDCCardThemer.applyScheme(cardScheme, toCardCell: self)
+    self.inkView.inkColor = cardScheme.colorScheme.primaryColor.withAlphaComponent(0.16)
     self.titleLabel.font = typographyScheme.caption
   }
 

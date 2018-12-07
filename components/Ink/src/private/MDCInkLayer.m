@@ -82,10 +82,10 @@ static NSString *const MDCInkLayerScaleString = @"transform.scale";
 }
 
 - (void)startAnimationAtPoint:(CGPoint)point {
-  [self startInkAtPoint:point animated:YES];
+  [self startInkAtPoint:point animated:YES completionBlock:nil];
 }
 
-- (void)startInkAtPoint:(CGPoint)point animated:(BOOL)animated {
+- (void)startInkAtPoint:(CGPoint)point animated:(BOOL)animated completionBlock:(MDCInkCompletionBlock)completionBlock {
   CGFloat radius = self.finalRadius;
   if (self.maxRippleRadius > 0) {
     radius = self.maxRippleRadius;
@@ -162,6 +162,9 @@ static NSString *const MDCInkLayerScaleString = @"transform.scale";
     animGroup.removedOnCompletion = NO;
     [CATransaction setCompletionBlock:^{
       self->_startAnimationActive = NO;
+      if (completionBlock) {
+        completionBlock();
+      }
     }];
     [self addAnimation:animGroup forKey:nil];
     [CATransaction commit];

@@ -17,6 +17,8 @@
 
 @protocol MDCInkLayerDelegate;
 
+typedef void (^MDCInkCompletionBlock)(void);
+
 /**
  A Core Animation layer that draws and animates the ink effect.
 
@@ -81,7 +83,7 @@
  @param point the point where to start the ink ripple
  @param animated if to animate the ripple or not
  */
-- (void)startInkAtPoint:(CGPoint)point animated:(BOOL)animated;
+- (void)startInkAtPoint:(CGPoint)point animated:(BOOL)animated completionBlock:(MDCInkCompletionBlock)completionBlock;
 
 /**
  Changes the opacity of the ink ripple depending on if touch point is contained within or

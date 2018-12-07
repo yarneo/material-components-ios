@@ -176,17 +176,22 @@ static const BOOL MDCCardCellIsInteractableDefault = YES;
       break;
     }
     case MDCCardCellStateNormal: {
-      [self.inkView startTouchEndAtPoint:_lastTouch
-                                animated:animated
-                          withCompletion:nil];
-      break;
+      [self.inkView cancelAllAnimationsAnimated:animated];
     }
+      break;
     case MDCCardCellStateHighlighted: {
       // Note: setHighlighted: can get getting more calls with YES than NO when clicking rapidly.
       // To guard against ink never going away and darkening our card we call
       // startTouchEndedAnimationAtPoint:completion:.
-      [self.inkView startTouchEndAtPoint:_lastTouch animated:animated withCompletion:nil];
-      [self.inkView startTouchBeganAtPoint:_lastTouch animated:animated withCompletion:nil];
+//      [self.inkView startTouchEndAtPoint:_lastTouch animated:animated withCompletion:nil];
+      [self.inkView startTouchBeganAtPoint:_lastTouch animated:animated withCompletion:^{
+        if (self->_state != MDCCardCellStateNormal) {
+//        self.inkView.activeInkLayer.fillColor = [self.inkView.inkColor colorWithAlphaComponent:(CGFloat)0.04].CGColor;
+
+          //DRAGGED:
+                  self.inkView.activeInkLayer.fillColor = [self.inkView.inkColor colorWithAlphaComponent:(CGFloat)0.08].CGColor;
+        }
+      }];
       break;
     }
   }
@@ -195,7 +200,9 @@ static const BOOL MDCCardCellIsInteractableDefault = YES;
   [self updateBorderColor];
   [self updateBorderWidth];
   [self updateShadowColor];
-  [self updateImage];
+  if (state != MDCCardCellStateHighlighted) {
+    [self updateImage];
+  }
   [self updateImageAlignment];
   [self updateImageTintColor];
 }
@@ -485,9 +492,9 @@ static const BOOL MDCCardCellIsInteractableDefault = YES;
   UITouch *touch = [touches anyObject];
   CGPoint location = [touch locationInView:self];
   _lastTouch = location;
-  if (!self.selected || !self.selectable) {
+//  if (!self.selected || !self.selectable) {
     [self setState:MDCCardCellStateHighlighted animated:YES];
-  }
+//  }
 }
 
 - (void)touchesMoved:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {

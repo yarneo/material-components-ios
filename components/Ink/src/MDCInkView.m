@@ -15,7 +15,6 @@
 #import "MDCInkView.h"
 
 #import "MaterialMath.h"
-#import "private/MDCInkLayer.h"
 #import "private/MDCLegacyInkLayer.h"
 
 @interface MDCInkPendingAnimation : NSObject <CAAction>
@@ -32,7 +31,6 @@
 @property(nonatomic, strong) CAShapeLayer *maskLayer;
 @property(nonatomic, copy) MDCInkCompletionBlock startInkRippleCompletionBlock;
 @property(nonatomic, copy) MDCInkCompletionBlock endInkRippleCompletionBlock;
-@property(nonatomic, strong) MDCInkLayer *activeInkLayer;
 
 // Legacy ink ripple
 @property(nonatomic, readonly) MDCLegacyInkLayer *inkLayer;
@@ -200,7 +198,7 @@
     inkLayer.opacity = 0;
     inkLayer.frame = self.bounds;
     [self.layer addSublayer:inkLayer];
-    [inkLayer startInkAtPoint:point animated:animated];
+    [inkLayer startInkAtPoint:point animated:animated completionBlock:completionBlock];
     self.activeInkLayer = inkLayer;
   }
 }
