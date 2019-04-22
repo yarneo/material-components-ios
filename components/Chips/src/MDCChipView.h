@@ -149,6 +149,16 @@
  */
 @property(nonatomic, assign) UIEdgeInsets hitAreaInsets;
 
+/**
+ This property determines if an @c MDCChipView should use the @c MDCInkView behavior or not.
+
+ By setting this property to @c YES, @c MDCStatefulRippleView is used to provide the user visual
+ touch feedback, instead of the legacy @c MDCInkView.
+
+ @note Defaults to @c NO.
+ */
+@property(nonatomic, assign) BOOL enableRippleBehavior;
+
 /*
  A color used as the chip's @c backgroundColor for @c state.
 

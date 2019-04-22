@@ -18,6 +18,7 @@
 
 #import "MaterialInk.h"
 #import "MaterialMath.h"
+#import "MaterialRipple.h"
 #import "MaterialShadowElevations.h"
 #import "MaterialShadowLayer.h"
 #import "MaterialShapes.h"
@@ -104,6 +105,7 @@ static inline CGSize CGSizeShrinkWithInsets(CGSize size, UIEdgeInsets edgeInsets
 @property(nonatomic, readonly) BOOL showSelectedImageView;
 @property(nonatomic, readonly) BOOL showAccessoryView;
 @property(nonatomic, strong) MDCInkView *inkView;
+@property(nonatomic, strong) MDCRippleView *rippleView;
 @property(nonatomic, readonly) CGFloat pixelScale;
 @end
 
@@ -171,8 +173,13 @@ static inline CGSize CGSizeShrinkWithInsets(CGSize size, UIEdgeInsets edgeInsets
     _inkView.inkColor = [self inkColorForState:UIControlStateNormal];
     [self addSubview:_inkView];
 
+    _rippleView = [[MDCStatefulRippleView alloc] initWithFrame:self.bounds];
+    _rippleView.rippleColor = [self inkColorForState:UIControlStateNormal];
+
     _imageView = [[UIImageView alloc] init];
     [self addSubview:_imageView];
+
+    self.enableRippleBehavior = YES;
 
     _selectedImageView = [[UIImageView alloc] init];
     [self addSubview:_selectedImageView];
@@ -255,6 +262,18 @@ static inline CGSize CGSizeShrinkWithInsets(CGSize size, UIEdgeInsets edgeInsets
 
 - (UIColor *)inkColor {
   return [self inkColorForState:UIControlStateNormal];
+}
+
+- (void)setEnableRippleBehavior:(BOOL)enableRippleBehavior {
+  _enableRippleBehavior = enableRippleBehavior;
+
+  if (enableRippleBehavior) {
+    [self.inkView removeFromSuperview];
+    [self insertSubview:self.rippleView belowSubview:self.imageView];
+  } else {
+    [self.rippleView removeFromSuperview];
+    [self insertSubview:self.inkView belowSubview:self.imageView];
+  }
 }
 
 #pragma mark - Dynamic Type Support
@@ -400,6 +419,8 @@ static inline CGSize CGSizeShrinkWithInsets(CGSize size, UIEdgeInsets edgeInsets
 - (void)updateInkColor {
   UIColor *inkColor = [self inkColorForState:self.state];
   self.inkView.inkColor = inkColor ? inkColor : self.inkView.defaultInkColor;
+  self.rippleView.rippleColor =
+      inkColor ? inkColor : [UIColor colorWithWhite:1 alpha:(CGFloat)0.12];
 }
 
 - (nullable UIColor *)shadowColorForState:(UIControlState)state {
@@ -569,6 +590,7 @@ static inline CGSize CGSizeShrinkWithInsets(CGSize size, UIEdgeInsets edgeInsets
   [super layoutSubviews];
 
   _inkView.frame = self.bounds;
+  _rippleView.frame = self.bounds;
   _imageView.frame = [self imageViewFrame];
   _selectedImageView.frame = [self selectedImageViewFrame];
   _accessoryView.frame = [self accessoryViewFrame];
@@ -744,6 +766,7 @@ static inline CGSize CGSizeShrinkWithInsets(CGSize size, UIEdgeInsets edgeInsets
 - (void)willMoveToSuperview:(UIView *)newSuperview {
   [super willMoveToSuperview:newSuperview];
   [self.inkView cancelAllAnimationsAnimated:NO];
+  [self.rippleView cancelAllRipplesAnimated:NO completion:nil];
 }
 
 - (BOOL)showImageView {
@@ -809,6 +832,7 @@ static inline CGSize CGSizeShrinkWithInsets(CGSize size, UIEdgeInsets edgeInsets
       (CGFloat)(MDCHypot(size.height, size.width + widthDiff) / 2 + 10 + widthDiff / 2);
 
   [_inkView startTouchBeganAnimationAtPoint:point completion:nil];
+  [_rippleView beginRippleTouchDownAtPoint:point animated:YES completion:nil];
 }
 
 - (void)startTouchEndedAnimationAtPoint:(CGPoint)point {
@@ -816,6 +840,7 @@ static inline CGSize CGSizeShrinkWithInsets(CGSize size, UIEdgeInsets edgeInsets
     return;
   }
   [_inkView startTouchEndedAnimationAtPoint:point completion:nil];
+  [_rippleView beginRippleTouchUpAnimated:YES completion:nil];
 }
 
 - (BOOL)willChangeSizeWithSelectedValue:(BOOL)selected {
