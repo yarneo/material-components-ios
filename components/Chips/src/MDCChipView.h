@@ -15,6 +15,7 @@
 #import <CoreGraphics/CoreGraphics.h>
 #import <UIKit/UIKit.h>
 
+#import "MaterialRipple.h"
 #import "MaterialShadowElevations.h"
 #import "MaterialShapes.h"
 
@@ -158,6 +159,9 @@
  @note Defaults to @c NO.
  */
 @property(nonatomic, assign) BOOL enableRippleBehavior;
+
+@property(nonatomic, strong) MDCStatefulRippleView *rippleView;
+
 
 /*
  A color used as the chip's @c backgroundColor for @c state.

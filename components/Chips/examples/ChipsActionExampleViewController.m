@@ -50,7 +50,7 @@
   _collectionView.dataSource = self;
   _collectionView.delegate = self;
   _collectionView.backgroundColor = [UIColor whiteColor];
-  _collectionView.contentInset = UIEdgeInsetsMake(4, 8, 4, 8);
+  _collectionView.contentInset = UIEdgeInsetsMake(4, 20, 4, 8);
   [_collectionView registerClass:[MDCChipCollectionViewCell class]
       forCellWithReuseIdentifier:@"Cell"];
 

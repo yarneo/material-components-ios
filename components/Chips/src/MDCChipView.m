@@ -18,7 +18,6 @@
 
 #import "MaterialInk.h"
 #import "MaterialMath.h"
-#import "MaterialRipple.h"
 #import "MaterialShadowElevations.h"
 #import "MaterialShadowLayer.h"
 #import "MaterialShapes.h"
@@ -105,7 +104,6 @@ static inline CGSize CGSizeShrinkWithInsets(CGSize size, UIEdgeInsets edgeInsets
 @property(nonatomic, readonly) BOOL showSelectedImageView;
 @property(nonatomic, readonly) BOOL showAccessoryView;
 @property(nonatomic, strong) MDCInkView *inkView;
-@property(nonatomic, strong) MDCRippleView *rippleView;
 @property(nonatomic, readonly) CGFloat pixelScale;
 @end
 
@@ -572,14 +570,16 @@ static inline CGSize CGSizeShrinkWithInsets(CGSize size, UIEdgeInsets edgeInsets
 }
 
 - (void)setHighlighted:(BOOL)highlighted {
+  NSLog(@"I am highlighted: %d", highlighted);
   [super setHighlighted:highlighted];
-
+  self.rippleView.rippleHighlighted = highlighted;
   [self updateState];
 }
 
 - (void)setSelected:(BOOL)selected {
+  NSLog(@"I am selected: %d", selected);
   [super setSelected:selected];
-
+  self.rippleView.selected = selected;
   [self updateState];
   [self setNeedsLayout];
 }
@@ -788,29 +788,54 @@ static inline CGSize CGSizeShrinkWithInsets(CGSize size, UIEdgeInsets edgeInsets
 #pragma mark - Ink Touches
 
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+  if (self.enableRippleBehavior) {
+    [self.rippleView touchesBegan:touches withEvent:event];
+  }
   [super touchesBegan:touches withEvent:event];
-
-  [self startTouchBeganAnimationAtPoint:[self locationFromTouches:touches]];
+  if (!self.enableRippleBehavior) {
+    [self startTouchBeganAnimationAtPoint:[self locationFromTouches:touches]];
+  }
 }
 
 - (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
+  if (self.enableRippleBehavior) {
+    [self.rippleView touchesEnded:touches withEvent:event];
+  }
   [super touchesEnded:touches withEvent:event];
 
-  [self startTouchEndedAnimationAtPoint:[self locationFromTouches:touches]];
+  if (!self.enableRippleBehavior) {
+    [self startTouchEndedAnimationAtPoint:[self locationFromTouches:touches]];
+  }
 }
 
 - (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event {
+  if (self.enableRippleBehavior) {
+    [self.rippleView touchesCancelled:touches withEvent:event];
+  }
   [super touchesCancelled:touches withEvent:event];
 
-  [self startTouchEndedAnimationAtPoint:[self locationFromTouches:touches]];
+  if (!self.enableRippleBehavior) {
+    [self startTouchEndedAnimationAtPoint:[self locationFromTouches:touches]];
+  }
+}
+
+- (void)touchesMoved:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
+  if (self.enableRippleBehavior) {
+    [self.rippleView touchesMoved:touches withEvent:event];
+  }
+  [super touchesMoved:touches withEvent:event];
 }
 
 - (void)touchDragEnter:(__unused MDCChipView *)button forEvent:(UIEvent *)event {
-  [self startTouchBeganAnimationAtPoint:[self locationFromTouches:event.allTouches]];
+  if (!self.enableRippleBehavior) {
+    [self startTouchBeganAnimationAtPoint:[self locationFromTouches:event.allTouches]];
+  }
 }
 
 - (void)touchDragExit:(__unused MDCChipView *)button forEvent:(UIEvent *)event {
-  [self startTouchEndedAnimationAtPoint:[self locationFromTouches:event.allTouches]];
+  if (!self.enableRippleBehavior) {
+    [self startTouchEndedAnimationAtPoint:[self locationFromTouches:event.allTouches]];
+  }
 }
 
 - (CGPoint)locationFromTouches:(NSSet *)touches {
@@ -832,7 +857,6 @@ static inline CGSize CGSizeShrinkWithInsets(CGSize size, UIEdgeInsets edgeInsets
       (CGFloat)(MDCHypot(size.height, size.width + widthDiff) / 2 + 10 + widthDiff / 2);
 
   [_inkView startTouchBeganAnimationAtPoint:point completion:nil];
-  [_rippleView beginRippleTouchDownAtPoint:point animated:YES completion:nil];
 }
 
 - (void)startTouchEndedAnimationAtPoint:(CGPoint)point {
@@ -840,7 +864,6 @@ static inline CGSize CGSizeShrinkWithInsets(CGSize size, UIEdgeInsets edgeInsets
     return;
   }
   [_inkView startTouchEndedAnimationAtPoint:point completion:nil];
-  [_rippleView beginRippleTouchUpAnimated:YES completion:nil];
 }
 
 - (BOOL)willChangeSizeWithSelectedValue:(BOOL)selected {

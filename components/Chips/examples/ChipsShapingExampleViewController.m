@@ -51,7 +51,7 @@
   _chipView.imagePadding = UIEdgeInsetsMake(0, 10, 0, 0);
   _chipView.accessoryPadding = UIEdgeInsetsMake(0, 0, 0, 10);
   CGSize chipSize = [_chipView sizeThatFits:self.view.bounds.size];
-  _chipView.frame = CGRectMake(20, 20, chipSize.width + 20, chipSize.height + 20);
+  _chipView.frame = CGRectMake(20, 120, chipSize.width + 20, chipSize.height + 20);
   [_chipView applyThemeWithScheme:self.containerScheme];
   _chipView.shapeGenerator = _rectangleShapeGenerator;
   [self.view addSubview:_chipView];
@@ -85,8 +85,8 @@
   [super viewWillLayoutSubviews];
 
   CGSize sliderSize = [_cornerSlider sizeThatFits:self.view.bounds.size];
-  _cornerSlider.frame = CGRectMake(20, 140, self.view.bounds.size.width - 40, sliderSize.height);
-  _cornerSlider.frame = CGRectMake(20, 140 + sliderSize.height + 20,
+  _cornerSlider.frame = CGRectMake(20, 240, self.view.bounds.size.width - 40, sliderSize.height);
+  _cornerSlider.frame = CGRectMake(20, 240 + sliderSize.height + 20,
                                    self.view.bounds.size.width - 40, sliderSize.height);
   _cornerStyleControl.frame =
       CGRectMake(20, CGRectGetMaxY(_cornerSlider.frame) + 20, self.view.bounds.size.width - 40,

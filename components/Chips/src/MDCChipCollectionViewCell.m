@@ -80,6 +80,7 @@
   } else {
     _chipView.selected = selected;
   }
+
 }
 
 - (void)setHighlighted:(BOOL)highlighted {
@@ -100,21 +101,41 @@
 }
 
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
+  if (self.chipView.enableRippleBehavior) {
+    [self.chipView.rippleView touchesBegan:touches withEvent:event];
+  }
   [super touchesBegan:touches withEvent:event];
 
-  [_chipView startTouchBeganAnimationAtPoint:[self locationFromTouches:touches]];
+  if (!self.chipView.enableRippleBehavior) {
+    [_chipView startTouchBeganAnimationAtPoint:[self locationFromTouches:touches]];
+  }
 }
 
 - (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
+  if (self.chipView.enableRippleBehavior) {
+    [self.chipView.rippleView touchesEnded:touches withEvent:event];
+  }
   [super touchesEnded:touches withEvent:event];
-
-  [_chipView startTouchEndedAnimationAtPoint:[self locationFromTouches:touches]];
+  if (!self.chipView.enableRippleBehavior) {
+    [_chipView startTouchEndedAnimationAtPoint:[self locationFromTouches:touches]];
+  }
 }
 
 - (void)touchesCancelled:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
+  if (self.chipView.enableRippleBehavior) {
+    [self.chipView.rippleView touchesCancelled:touches withEvent:event];
+  }
   [super touchesCancelled:touches withEvent:event];
+  if (!self.chipView.enableRippleBehavior) {
+    [_chipView startTouchEndedAnimationAtPoint:[self locationFromTouches:touches]];
+  }
+}
 
-  [_chipView startTouchEndedAnimationAtPoint:[self locationFromTouches:touches]];
+- (void)touchesMoved:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
+  if (self.chipView.enableRippleBehavior) {
+    [self.chipView.rippleView touchesMoved:touches withEvent:event];
+  }
+  [super touchesMoved:touches withEvent:event];
 }
 
 - (CGPoint)locationFromTouches:(NSSet<UITouch *> *)touches {
