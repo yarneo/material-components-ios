@@ -46,14 +46,14 @@ class DrawerHeaderViewController: UIViewController,MDCBottomDrawerHeader {
     return label
   }()
 
-  override var preferredContentSize: CGSize {
-    get {
-      return CGSize(width: view.bounds.width, height: preferredHeight)
-    }
-    set {
-      super.preferredContentSize = newValue
-    }
-  }
+//  override var preferredContentSize: CGSize {
+//    get {
+//      return CGSize(width: view.bounds.width, height: preferredHeight)
+//    }
+//    set {
+//      super.preferredContentSize = newValue
+//    }
+//  }
 
   init() {
     super.init(nibName: nil, bundle: nil)
@@ -66,12 +66,19 @@ class DrawerHeaderViewController: UIViewController,MDCBottomDrawerHeader {
   override func viewDidLoad() {
     super.viewDidLoad()
     view.addSubview(titleLabel)
+    self.view.backgroundColor = .blue
   }
 
   override func viewWillLayoutSubviews() {
     super.viewWillLayoutSubviews()
     titleLabel.center =
       CGPoint(x: self.view.frame.size.width / 2, y: self.preferredHeight - 20)
+  }
+
+  func updateTransitionRatio(_ transitionToTopRatio: CGFloat) {
+    print(transitionToTopRatio)
+    self.preferredContentSize = CGSize(
+      width: 0, height: 200 * transitionToTopRatio);
   }
 
 }

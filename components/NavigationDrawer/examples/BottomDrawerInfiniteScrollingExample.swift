@@ -19,7 +19,7 @@ import MaterialComponents.MaterialColorScheme
 import MaterialComponents.MaterialNavigationDrawer
 import MaterialComponents.MaterialNavigationDrawer_ColorThemer
 
-class BottomDrawerInfiniteScrollingExample: UIViewController {
+class BottomDrawerInfiniteScrollingExample: UIViewController, MDCBottomDrawerHeader {
   @objc var colorScheme = MDCSemanticColorScheme()
   let bottomAppBar = MDCBottomAppBarView()
 
@@ -151,6 +151,7 @@ extension BottomDrawerInfiniteScrollingExample {
       "description": "Navigation Drawer",
       "primaryDemo": true,
       "presentable": true,
+      "debug": true,
     ]
   }
 }
