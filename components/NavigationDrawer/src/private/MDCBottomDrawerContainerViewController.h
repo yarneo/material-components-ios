@@ -34,6 +34,9 @@
             (nonnull MDCBottomDrawerContainerViewController *)containerViewController
                                                drawerState:(MDCBottomDrawerState)drawerState;
 
+- (void)bottomDrawerContainerViewDidChangeScrollOffset:
+(nonnull MDCBottomDrawerContainerViewController *)containerViewController
+                                           scrollOffset:(CGFloat)scrollOffset;
 /**
  This method is called when the drawer is scrolled/dragged and provides a transition ratio value
  between 0-100% (0-1) that indicates the percentage in which the drawer is close to reaching the end

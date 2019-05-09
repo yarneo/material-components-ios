@@ -75,10 +75,10 @@ class DrawerHeaderViewController: UIViewController,MDCBottomDrawerHeader {
       CGPoint(x: self.view.frame.size.width / 2, y: self.preferredHeight - 20)
   }
 
-  func updateTransitionRatio(_ transitionToTopRatio: CGFloat) {
-    print(transitionToTopRatio)
-    self.preferredContentSize = CGSize(
-      width: 0, height: 200 * transitionToTopRatio);
-  }
+//  func updateTransitionRatio(_ transitionToTopRatio: CGFloat) {
+//    print(transitionToTopRatio)
+//    self.preferredContentSize = CGSize(
+//      width: 0, height: 200 * transitionToTopRatio);
+//  }
 
 }

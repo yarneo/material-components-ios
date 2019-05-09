@@ -136,7 +136,7 @@
  Delegate for MDCBottomDrawerViewController.
  */
 @protocol MDCBottomDrawerViewControllerDelegate <NSObject>
-
+@optional
 /**
  Called when the top inset of the drawer changes due to size changes when moving into full screen
  to cover the status bar and safe area inset. Also if there is a top handle, the top inset will
@@ -148,5 +148,8 @@
  */
 - (void)bottomDrawerControllerDidChangeTopInset:(nonnull MDCBottomDrawerViewController *)controller
                                        topInset:(CGFloat)topInset;
+
+- (void)bottomDrawerControllerDidChangeDrawerOffset:(nonnull MDCBottomDrawerViewController *)controller
+                                       drawerOffset:(CGFloat)drawerOffset;
 
 @end

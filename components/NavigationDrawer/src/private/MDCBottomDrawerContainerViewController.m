@@ -222,7 +222,7 @@ static UIColor *DrawerShadowColor(void) {
     if (self.trackingScrollView != nil) {
       normalizedContentOffset.y = [self updateContentOffsetForPerformantScrolling:contentOffset.y];
     }
-
+    [self.delegate bottomDrawerContainerViewDidChangeScrollOffset:self scrollOffset:normalizedContentOffset.y];
     [self updateViewWithContentOffset:normalizedContentOffset];
   }
 }

@@ -49,6 +49,9 @@
             (nonnull MDCBottomDrawerPresentationController *)presentationController
                        transitionRatio:(CGFloat)transitionRatio;
 
+- (void)bottomDrawerDidChangeScrollOffset:
+(nonnull MDCBottomDrawerPresentationController *)presentationController
+                              scrollOffset:(CGFloat)scrollOffset;
 @end
 
 /**

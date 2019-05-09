@@ -214,7 +214,9 @@
   if (!self.topHandleHidden) {
     topInset = MAX(topInset, (CGFloat)7.0);
   }
-  [self.delegate bottomDrawerControllerDidChangeTopInset:self topInset:topInset];
+  if ([self.delegate respondsToSelector:@selector(bottomDrawerControllerDidChangeTopInset:topInset:)]) {
+    [self.delegate bottomDrawerControllerDidChangeTopInset:self topInset:topInset];
+  }
 }
 
 - (void)setContentOffsetY:(CGFloat)contentOffsetY animated:(BOOL)animated {
@@ -223,6 +225,10 @@
         (MDCBottomDrawerPresentationController *)self.presentationController;
     [bottomDrawerPresentationController setContentOffsetY:contentOffsetY animated:animated];
   }
+}
+
+- (void)bottomDrawerDidChangeScrollOffset:(MDCBottomDrawerPresentationController *)presentationController scrollOffset:(CGFloat)scrollOffset {
+  [self.delegate bottomDrawerControllerDidChangeDrawerOffset:self drawerOffset:scrollOffset];
 }
 
 - (void)expandToFullscreenWithDuration:(CGFloat)duration

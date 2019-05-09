@@ -19,13 +19,13 @@ import MaterialComponents.MaterialColorScheme
 import MaterialComponents.MaterialNavigationDrawer
 import MaterialComponents.MaterialNavigationDrawer_ColorThemer
 
-class BottomDrawerInfiniteScrollingExample: UIViewController, MDCBottomDrawerHeader {
+class BottomDrawerInfiniteScrollingExample: UIViewController, MDCBottomDrawerHeader, MDCBottomDrawerViewControllerDelegate {
   @objc var colorScheme = MDCSemanticColorScheme()
   let bottomAppBar = MDCBottomAppBarView()
 
   let headerViewController = DrawerHeaderViewController()
   let contentViewController = DrawerContentTableViewController()
-
+  var originalLol : CGFloat?
   override func viewDidLoad() {
     super.viewDidLoad()
     view.backgroundColor = colorScheme.backgroundColor
@@ -41,6 +41,27 @@ class BottomDrawerInfiniteScrollingExample: UIViewController, MDCBottomDrawerHea
     MDCBottomAppBarColorThemer.applySurfaceVariant(withSemanticColorScheme: colorScheme,
                                                    to: bottomAppBar)
     view.addSubview(bottomAppBar)
+  }
+
+  func bottomDrawerControllerDidChangeDrawerOffset(_ controller: MDCBottomDrawerViewController, drawerOffset: CGFloat) {
+    let headerSize: CGFloat = 54;
+    if (originalLol == nil || originalLol! <= 0) {
+      originalLol = self.contentViewController.view.frame.origin.y - 44 - headerSize
+      return
+    }
+    let offset = originalLol! - drawerOffset
+    print(offset)
+    let calcHeight = (headerSize*2 - offset)/2;
+    print(calcHeight)
+    let height = min(max(0, calcHeight), headerSize)
+    print(height)
+//    if offset < (headerSize * 2) && offset >= headerSize {
+//      print(headerSize - offset)
+    if (calcHeight >= 0) {
+      self.headerViewController.preferredContentSize = CGSize(width: 0,
+                                                              height: height)
+    }
+//    }
   }
 
   private func layoutBottomAppBar() {
@@ -64,7 +85,8 @@ class BottomDrawerInfiniteScrollingExample: UIViewController, MDCBottomDrawerHea
 
   @objc private func presentNavigationDrawer() {
     let bottomDrawerViewController = MDCBottomDrawerViewController()
-    bottomDrawerViewController.maximumInitialDrawerHeight = 400;
+    bottomDrawerViewController.delegate = self
+//    bottomDrawerViewController.maximumInitialDrawerHeight = 400;
     bottomDrawerViewController.contentViewController = contentViewController
     contentViewController.drawerVC = bottomDrawerViewController
     bottomDrawerViewController.setTopCornersRadius(12, for: .collapsed)

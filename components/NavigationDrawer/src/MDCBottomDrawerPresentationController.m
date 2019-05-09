@@ -265,6 +265,13 @@ static CGFloat kTopHandleTopMargin = (CGFloat)5.0;
   }
 }
 
+- (void)bottomDrawerContainerViewDidChangeScrollOffset:(MDCBottomDrawerContainerViewController *)containerViewController scrollOffset:(CGFloat)scrollOffset {
+  id<MDCBottomDrawerPresentationControllerDelegate> strongDelegate = self.delegate;
+  if ([strongDelegate respondsToSelector:@selector(bottomDrawerDidChangeScrollOffset:scrollOffset:)]) {
+    [strongDelegate bottomDrawerDidChangeScrollOffset:self scrollOffset:scrollOffset];
+  }
+}
+
 - (void)bottomDrawerContainerViewControllerTopTransitionRatio:
             (MDCBottomDrawerContainerViewController *)containerViewController
                                               transitionRatio:(CGFloat)transitionRatio {
