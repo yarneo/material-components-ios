@@ -15,6 +15,7 @@
 #import <UIKit/UIKit.h>
 #import "MDCBottomDrawerPresentationController.h"
 #import "MDCBottomDrawerState.h"
+#import "MaterialElevation.h"
 
 @protocol MDCBottomDrawerHeader;
 @protocol MDCBottomDrawerViewControllerDelegate;
@@ -23,7 +24,7 @@
  View controller for containing a Google Material bottom drawer.
  */
 @interface MDCBottomDrawerViewController
-    : UIViewController <MDCBottomDrawerPresentationControllerDelegate>
+    : UIViewController <MDCBottomDrawerPresentationControllerDelegate, MDCElevatable, MDCElevationOverriding>
 
 /**
  The main content displayed by the drawer.
@@ -146,6 +147,17 @@
 @property(nonatomic, copy, nullable) void (^traitCollectionDidChangeBlock)
     (MDCBottomDrawerViewController *_Nonnull bottomDrawer,
      UITraitCollection *_Nullable previousTraitCollection);
+
+/**
+ This block is called after a change of the bottom drawer's elevation or one of its view
+ hierarchy ancestors.
+ Use this block to respond to elevation changes in the view or its ancestor views.
+ @param elevation The @c mdc_currentElevation plus the @c mdc_currentElevation of all ancestor
+ views.
+ @param object This bottom drawer.
+ */
+@property(nonatomic, copy, nullable) void (^mdc_elevationDidChangeBlock)
+    (MDCBottomDrawerViewController *_Nonnull object, CGFloat elevation);
 
 @end
 

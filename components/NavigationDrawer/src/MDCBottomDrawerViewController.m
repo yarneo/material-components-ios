@@ -31,6 +31,8 @@
   BOOL _isMaskAppliedFirstTime;
 }
 
+@synthesize mdc_overrideBaseElevation = _mdc_overrideBaseElevation;
+
 - (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
   self = [super initWithNibName:nil bundle:nil];
   if (self) {
@@ -54,6 +56,7 @@
   _maskLayer = [[MDCBottomDrawerHeaderMask alloc] initWithMaximumCornerRadius:0
                                                           minimumCornerRadius:0];
   _maximumInitialDrawerHeight = 0;
+  _mdc_overrideBaseElevation = -1;
 }
 
 - (void)viewWillLayoutSubviews {
@@ -251,6 +254,10 @@
     [bottomDrawerPresentationController expandToFullscreenWithDuration:duration
                                                             completion:completion];
   }
+}
+
+- (CGFloat)mdc_currentElevation {
+  return 1;
 }
 
 @end

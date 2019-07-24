@@ -127,6 +127,9 @@ NSString *const kMDCBottomDrawerScrollViewAccessibilityIdentifier =
 // The main scroll view.
 @property(nonatomic, readonly) UIScrollView *scrollView;
 
+// The bottom drawer top shadow.
+@property(nonatomic) MDCShadowLayer *shadowLayer;
+
 // The top header bottom shadow layer.
 @property(nonatomic) MDCShadowLayer *headerShadowLayer;
 
@@ -164,6 +167,7 @@ NSString *const kMDCBottomDrawerScrollViewAccessibilityIdentifier =
         self.presentingViewBounds.size.height * kInitialDrawerHeightFactor;
     _shouldPresentAtFullscreen = NO;
     _headerShadowColor = [[UIColor blackColor] colorWithAlphaComponent:(CGFloat)0.2];
+    _elevation = MDCShadowElevationNavDrawer;
   }
   return self;
 }
@@ -172,6 +176,8 @@ NSString *const kMDCBottomDrawerScrollViewAccessibilityIdentifier =
   [self removeScrollViewObserver];
   [self.headerShadowLayer removeFromSuperlayer];
   self.headerShadowLayer = nil;
+  [self.shadowLayer removeFromSuperlayer];
+  self.shadowLayer = nil;
   [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -340,6 +346,15 @@ NSString *const kMDCBottomDrawerScrollViewAccessibilityIdentifier =
   }
 }
 
+- (void)setElevation:(MDCShadowElevation)elevation {
+  BOOL elevationChanged = !MDCCGFloatEqual(_elevation, elevation);
+  _elevation = elevation;
+  [self.shadowLayer setElevation:elevation];
+  if (elevationChanged) {
+//    [self mdc_elevationDidChange];
+  }
+}
+
 - (void)setContentOffsetY:(CGFloat)contentOffsetY animated:(BOOL)animated {
   _scrollToContentOffsetY = contentOffsetY;
   CGFloat topAreaInsetForHeader = (self.headerViewController ? MDCDeviceTopSafeAreaInset() : 0);
@@ -443,6 +458,10 @@ NSString *const kMDCBottomDrawerScrollViewAccessibilityIdentifier =
   // Layout the top header's bottom shadow.
   [self setUpHeaderBottomShadowIfNeeded];
   self.headerShadowLayer.frame = self.headerViewController.view.bounds;
+
+  // Layout the bottom drawer top shadow.
+  [self setUpDrawerShadowIfNeeded];
+  self.shadowLayer.frame = self.view.bounds;
 
   // Set the scroll view's content size.
   CGSize scrollViewContentSize = self.presentingViewBounds.size;
@@ -567,6 +586,20 @@ NSString *const kMDCBottomDrawerScrollViewAccessibilityIdentifier =
   self.headerShadowLayer.shadowColor = self.headerShadowColor.CGColor;
   [self.headerViewController.view.layer addSublayer:self.headerShadowLayer];
   self.headerShadowLayer.hidden = YES;
+}
+
+- (void)setUpDrawerShadowIfNeeded {
+  if (self.shadowLayer) {
+    // Duplicated from below to support dynamic color updates
+    self.shadowLayer.shadowColor = self.drawerShadowColor.CGColor;
+    return;
+  }
+
+  self.shadowLayer = [[MDCShadowLayer alloc] init];
+  // The header acts as an AppBar, so it keeps the same elevation value.
+  self.shadowLayer.elevation = MDCShadowElevationNavDrawer;
+  self.shadowLayer.shadowColor = self.drawerShadowColor.CGColor;
+  [self.view.layer addSublayer:self.shadowLayer];
 }
 
 #pragma mark Content Offset Adaptions (Private)
