@@ -153,9 +153,34 @@ const CGSize kMinimumAccessibleButtonSize = {64.0, 48.0};
   self.floatingButton.accessibilityLabel = @"Create";
   [self.view addSubview:self.floatingButton];
 
+  // Simple button
+
+  UIButton *simpleButton = [[UIButton alloc] init];
+  [simpleButton setTitle:@"SIMPLE" forState:UIControlStateNormal];
+
+  // Theming
+  simpleButton.backgroundColor = self.containerScheme.colorScheme.surfaceColor;
+  simpleButton.layer.cornerRadius = 4;
+  simpleButton.clipsToBounds = YES;
+  simpleButton.titleLabel.font = self.containerScheme.typographyScheme.button;
+  [simpleButton setTitleColor:self.containerScheme.colorScheme.primaryColor
+                     forState:UIControlStateNormal];
+  simpleButton.contentEdgeInsets = UIEdgeInsetsMake(8, 16, 8, 16);
+  CGSize size = [simpleButton sizeThatFits:CGSizeMake(CGFLOAT_MAX, 36)];
+  CGFloat margin = (36 - size.height) / 2;
+  simpleButton.contentEdgeInsets = UIEdgeInsetsMake(8 + margin, 16, 8 + margin, 16);
+  simpleButton.showsTouchWhenHighlighted = YES;
+  CGFloat touchAreaWidthDiff = -MAX((48 - size.width) / 2, 0);
+  CGFloat touchAreaHeightDiff = -MAX((48 - 36) / 2, 0);
+  simpleButton.imageEdgeInsets = UIEdgeInsetsMake(touchAreaWidthDiff, touchAreaHeightDiff,
+                                                  touchAreaWidthDiff, touchAreaHeightDiff);
+  [simpleButton sizeToFit];
+
+  [self.view addSubview:simpleButton];
+
   self.buttons = @[
     containedButton, disabledContainedButton, textButton, disabledTextButton, outlinedButton,
-    disabledOutlinedButton, self.floatingButton
+    disabledOutlinedButton, self.floatingButton, simpleButton,
   ];
 
   [self setupExampleViews];
@@ -176,10 +201,11 @@ const CGSize kMinimumAccessibleButtonSize = {64.0, 48.0};
   UILabel *outlinedButtonLabel = [self addLabelWithText:@"Outlined"];
   UILabel *disabledOutlinedButtonLabel = [self addLabelWithText:@"Disabled Outlined"];
   UILabel *floatingButtonLabel = [self addLabelWithText:@"Floating Action"];
+  UILabel *simpleButtonLabel = [self addLabelWithText:@"Simple Button"];
 
   self.labels = @[
     containedButtonLabel, disabledContainedButtonLabel, textButtonLabel, disabledTextButtonLabel,
-    outlinedButtonLabel, disabledOutlinedButtonLabel, floatingButtonLabel
+    outlinedButtonLabel, disabledOutlinedButtonLabel, floatingButtonLabel, simpleButtonLabel,
   ];
 }
 
